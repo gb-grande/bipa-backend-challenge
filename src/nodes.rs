@@ -5,6 +5,7 @@ use chrono:: {
     DateTime,
     Utc
 };
+use tokio_postgres::Row;
 const BTC_SATS_RATIO : i32 = 100000000; 
 const FETCH_URL : &str = "https://mempool.space/api/v1/lightning/nodes/rankings/connectivity";
 
@@ -59,6 +60,20 @@ impl Node {
         };
         return new_node;
     }
+    
+    pub fn build_from_row(row : &Row) -> Self {
+        let alias : String = row.get("alias");
+        let capacity : f64 = row.get("capacity");
+        let first_seen : DateTime<Utc> = row.get("first_seen");
+        let public_key : String = row.get("public_key");
+        return Self {
+            public_key : public_key,
+            capacity : capacity,
+            alias: alias,
+            first_seen : first_seen
+        };
+
+    }
 
     //converts a json Vector to a node struct Vector
     pub fn build_nodes_vec(vec_json : Vec<Value>) -> Vec<Node> {
@@ -69,5 +84,6 @@ impl Node {
         return node_vec;
 
     }
+    
 
 }
