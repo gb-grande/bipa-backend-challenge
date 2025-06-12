@@ -11,10 +11,10 @@ const FETCH_URL : &str = "https://mempool.space/api/v1/lightning/nodes/rankings/
 //Structure which represents a node in memory
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Node {
-    public_key : String,
-    alias : String,
-    capacity : f64,
-    first_seen : DateTime<Utc>
+    pub public_key : String,
+    pub alias : String,
+    pub capacity : f64,
+    pub first_seen : DateTime<Utc>
 }
 
 
