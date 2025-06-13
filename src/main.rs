@@ -10,7 +10,7 @@ use tokio::sync::Mutex;
 use crate::db::{try_to_connect, update_nodes};
 use db::AppState;
 const PORT : &str = "3000";
-const CONN_STRING : &str = "host=localhost user=admin password=admin123 dbname=nodesdb port=5000";
+const CONN_STRING : &str = "host=postgres user=admin password=admin123 dbname=nodesdb port=5432";
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let shared_state = Arc::new(AppState {client : Arc::new(Mutex::new(None))});

@@ -16,6 +16,7 @@ pub struct AppState {
 
 
 pub async fn try_to_connect(conn_string : String, shared_state : Arc<AppState>) -> (){
+    println!("Trying to connect to db");
     //reconection loop
     loop {
         match tokio_postgres::connect(conn_string.as_str(), NoTls).await{

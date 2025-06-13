@@ -14,6 +14,11 @@ services:
       - ./postgresdb/config:/config
       - ./postgresdb/archive:/mnt/server/archive
     command: -c config_file=/config/postgresql.conf
-
+  server:
+    build: ./
+    container_name: server
+    image: server
+    ports:
+      - "3000:3000"
 volumes:
   pgdata:
