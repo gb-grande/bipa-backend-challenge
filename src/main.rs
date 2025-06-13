@@ -1,14 +1,11 @@
 mod nodes;
 mod db;
-use std::{sync::Arc, time::Duration};
 mod query_builder;
-use axum::{
-    extract::State, response::Json, routing::get, Router
-};
+use std::{sync::Arc, time::Duration};
+use axum::{extract::State, response::Json, routing::get, Router};
 use serde_json::{Value, json};
 use tokio::sync::Mutex;
-use crate::db::{try_to_connect, update_nodes};
-use db::AppState;
+use db::{try_to_connect, update_nodes, AppState};
 //constants for setting the server up
 const PORT : &str = "3000";
 const CONN_STRING : &str = "host=postgres user=admin password=admin123 dbname=nodesdb port=5432";

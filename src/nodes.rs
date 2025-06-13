@@ -1,10 +1,7 @@
 use reqwest::Error;
 use serde_json::Value;
 use serde::{Serialize, Deserialize};
-use chrono:: {
-    DateTime,
-    Utc
-};
+use chrono:: {DateTime, Utc};
 use tokio_postgres::Row;
 const BTC_SATS_RATIO : i32 = 100000000; 
 const FETCH_URL : &str = "https://mempool.space/api/v1/lightning/nodes/rankings/connectivity";
