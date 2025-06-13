@@ -70,6 +70,7 @@ impl Node {
         return node_vec;
 
     }
+    //receives a bd row and creates the corresponding Node structure
     pub fn build_from_row(row : &Row) -> Self {
         let alias : String = row.get("alias");
         let capacity : f64 = row.get("capacity");
@@ -83,7 +84,7 @@ impl Node {
         };
 
     }
-
+    //same as before but receives an array
     pub fn build_nodes_vec_from_rows(rows : &Vec<Row>) -> Vec<Self> {
         let mut nodes_vec : Vec<Node> = Vec::<Node>::new();
         for row in rows.iter() {

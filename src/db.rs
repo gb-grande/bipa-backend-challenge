@@ -48,7 +48,7 @@ pub async fn update_nodes(client : &Client) -> Result<(), Box<dyn std::error::Er
     return Ok(());
 }
 
-pub async fn get_nodes_in_db(client : &Client) -> Result<(Vec<Node>), Box<dyn std::error::Error>>{
+pub async fn get_nodes_in_db(client : &Client) -> Result<Vec<Node>, Box<dyn std::error::Error>>{
     let rows = client.query("SELECT * FROM nodes;", &[]).await?;
     let nodes_vec = Node::build_nodes_vec_from_rows(&rows);
     return Ok(nodes_vec);
