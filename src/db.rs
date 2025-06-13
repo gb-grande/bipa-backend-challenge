@@ -3,6 +3,7 @@ use tokio_postgres::{
 };
 use std::time::Duration;
 use crate::nodes;
+use crate::nodes::Node;
 use crate::query_builder;
 //tries to connect to db client, 
 pub async fn try_to_connect(conn_string : &str) -> Client{
@@ -38,11 +39,18 @@ pub async fn update_nodes(client : &Client) -> Result<(), Box<dyn std::error::Er
     //fetches from api
     let json_vec = nodes::get_nodes().await?;
     //converts to node struct
-    let nodes_vec = nodes::Node::build_nodes_vec(json_vec);
+    let nodes_vec = nodes::Node::build_nodes_vec_from_json(json_vec);
     //builds query
     let query = query_builder::UpdateDbQuery::build_from_nodes(&nodes_vec);
     let query_str = query.get_querry();
     client.simple_query(query_str).await?;
     println!("Succesful update");
     return Ok(());
+}
+
+pub async fn get_nodes_in_db(client : &Client) -> Result<(Vec<Node>), Box<dyn std::error::Error>>{
+    let rows = client.query("SELECT * FROM nodes;", &[]).await?;
+    let nodes_vec = Node::build_nodes_vec_from_rows(&rows);
+    return Ok(nodes_vec);
+    
 }

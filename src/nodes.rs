@@ -61,6 +61,15 @@ impl Node {
         return new_node;
     }
     
+    //converts a json Vector to a node struct Vector
+    pub fn build_nodes_vec_from_json(vec_json : Vec<Value>) -> Vec<Node> {
+        let mut node_vec : Vec<Node> = Vec::new();
+        for json in vec_json.iter() {
+            node_vec.push(Node::build_from_json(json));
+        }
+        return node_vec;
+
+    }
     pub fn build_from_row(row : &Row) -> Self {
         let alias : String = row.get("alias");
         let capacity : f64 = row.get("capacity");
@@ -75,14 +84,12 @@ impl Node {
 
     }
 
-    //converts a json Vector to a node struct Vector
-    pub fn build_nodes_vec(vec_json : Vec<Value>) -> Vec<Node> {
-        let mut node_vec : Vec<Node> = Vec::new();
-        for json in vec_json.iter() {
-            node_vec.push(Node::build_from_json(json));
+    pub fn build_nodes_vec_from_rows(rows : &Vec<Row>) -> Vec<Self> {
+        let mut nodes_vec : Vec<Node> = Vec::<Node>::new();
+        for row in rows.iter() {
+            nodes_vec.push(Node::build_from_row(row));
         }
-        return node_vec;
-
+        return nodes_vec;
     }
     
 
