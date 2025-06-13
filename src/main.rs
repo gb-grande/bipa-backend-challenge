@@ -1,6 +1,6 @@
 mod nodes;
 mod db;
-use std::{sync::Arc};
+use std::{sync::Arc, time::Duration};
 mod query_builder;
 use axum::{
     extract::State,
@@ -26,11 +26,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let client = db::try_to_connect(CONN_STRING).await;
     let shared_state = Arc::new(AppState { client : client});
-    let is_nodes_empty = db::is_nodes_table_empty(&shared_state.client).await?;
-    println!("{}", is_nodes_empty);
-    if is_nodes_empty {
-        update_nodes(&shared_state.client).await?;
-    }
+    println!("Fetching nodes on server startup");
+    update_nodes(&shared_state.client).await?;
+    let st_clone = shared_state.clone();
+    tokio::spawn(async move {
+        update_every_duration(&st_clone.client, Duration::from_secs(60)).await;
+    });
     let app : Router<()> = Router::new().route("/nodes", get(serve_nodes_json)).with_state(shared_state);
     let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{PORT}")).await.unwrap();
     axum::serve(listener, app).await.unwrap();
@@ -51,5 +52,15 @@ async fn serve_nodes_json (State(state): State<Arc<AppState>>) -> Json<Value> {
         }))
     }
  }
+
+async fn update_every_duration(client : &Client, duration : Duration) -> Result<(), Box<dyn std::error::Error>>{
+    let mut interval = tokio::time::interval(duration);
+    //first tick so it waits the duration before ticking again
+    interval.tick().await;
+    loop {
+        interval.tick().await;
+        update_nodes(client).await?;
+    }
+}
 
 

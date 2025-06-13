@@ -26,13 +26,6 @@ pub async fn try_to_connect(conn_string : &str) -> Client{
     }    
 }
 
-pub async fn is_nodes_table_empty(client : &Client) -> Result<bool, Error>{
-    let rows = client.query("SELECT * FROM NODES;", &[]).await?;
-    if rows.len() == 0 {
-        return Ok(true);
-    }
-    return Ok(false);
-}
 //update nodes table
 pub async fn update_nodes(client : &Client) -> Result<(), Box<dyn std::error::Error>>{
     println!("Updating nodes");
@@ -54,3 +47,12 @@ pub async fn get_nodes_in_db(client : &Client) -> Result<Vec<Node>, Box<dyn std:
     return Ok(nodes_vec);
     
 }
+
+
+// pub async fn is_nodes_table_empty(client : &Client) -> Result<bool, Error>{
+//     let rows = client.query("SELECT * FROM NODES;", &[]).await?;
+//     if rows.len() == 0 {
+//         return Ok(true);
+//     }
+//     return Ok(false);
+// }
