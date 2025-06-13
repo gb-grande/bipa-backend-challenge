@@ -1,6 +1,7 @@
 use crate::nodes;
 
-
+//structure responsible for creating a transaction to insert nodes in dbs
+//at the time of implementation, I didn't knew that there is a similar construction in tokio_postgres     
 pub struct UpdateDbQuery {
     querry : String,
     rows : i32,
@@ -14,6 +15,7 @@ fn get_values(node : &nodes::Node) -> String {
 
 }
 
+//methods for the query builder
 impl UpdateDbQuery {
     //returns new querry, if no nodes are provided it will clean the database (assuming there aren't any nodes in the api the server fetches its data from)
     pub fn new() -> Self {
@@ -70,7 +72,7 @@ impl UpdateDbQuery {
         new_querry.finish_transaction();
         return new_querry;
     }
-
+    //returns the finished querry, panics if it isn't finished
     pub fn get_querry(&self) -> &String {
         if self.finished {
             let binding = &self.querry;

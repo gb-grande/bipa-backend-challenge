@@ -29,7 +29,7 @@ impl Node {
     pub fn build_from_json(json : &Value) -> Node {
         let capacity_in_sats = json["capacity"].as_i64();
         let capacity_in_btc : f64;
-        //if for any reason any of the fields is, it will be replace by a default value - empty string or epoch as a date
+        //if for any reason any of the fields is, it will be replaced by a default value - empty string or epoch as a date
         match capacity_in_sats {
             Some(num) => capacity_in_btc = num as f64/BTC_SATS_RATIO as f64,
             None => capacity_in_btc = 0f64
