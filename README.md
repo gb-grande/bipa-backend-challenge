@@ -1,5 +1,5 @@
 # bipa-backend-challenge
-Back-end coding challenge for Bipa intership
+Back-end coding challenge for Bipa internship
 
 ## Build tools & versions used
 Docker, Docker compose, Rust 1.8.7
